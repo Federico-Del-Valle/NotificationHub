@@ -17,22 +17,14 @@ public class MessageController {
 
     private final MessageRepository messages;
     private final CurrentUser currentUser;
+    private final NotificationService notificationService;
 
     // POST /api/messages/send  (requiere Bearer token)
     @PostMapping("/send")
     public MessageResponse send(@RequestBody @Valid SendMessageRequest req) {
-        var sender = currentUser.getOrThrow();
-
-        var msg = Message.builder()
-                .sender(sender)
-                .recipient(req.recipient())
-                .content(req.content())
-                .status(MessageStatus.PENDING)
-                .providerResponse(null)
-                .build();
-
-        messages.save(msg);
-        return toResponse(msg);
+        var user = currentUser.getOrThrow();
+        var saved = notificationService.sendAndPersist(user, req, user.getDailyLimit());
+        return toResponse(saved);
     }
 
     // GET /api/messages/mine  (mis enviados)

@@ -2,12 +2,11 @@ package com.example.notificationhub.messages.senders;
 
 import com.example.notificationhub.messages.Provider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.Map;
 
 @Component
@@ -23,11 +22,22 @@ public class SlackSender implements CommonSender {
         try {
             var headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            var body = Map.of("text", content);
-            var resp = http.postForEntity(webhookUrl, new HttpEntity<>(body, headers), String.class);
+            var entity  = new HttpEntity<>(Map.of("text", content), headers);
+
+            ResponseEntity<String> resp = http.exchange(webhookUrl, HttpMethod.POST, entity, String.class);
+
+            // Si Slack redirige (302/307/etc), seguimos manualmente
+            if (resp.getStatusCode().is3xxRedirection()) {
+                URI loc = resp.getHeaders().getLocation();
+                if (loc != null) {
+                    resp = http.exchange(loc, HttpMethod.POST, entity, String.class);
+                }
+            }
+
             boolean ok = resp.getStatusCode().is2xxSuccessful();
-            return ok ? ProviderResult.ok("Slack " + resp.getStatusCode())
-                    : ProviderResult.fail("Slack " + resp.getStatusCode() + " " + resp.getBody());
+            return ok
+                    ? ProviderResult.ok("Slack " + resp.getStatusCode())
+                    : ProviderResult.fail("Slack " + resp.getStatusCode() + " " + (resp.getBody() == null ? "" : resp.getBody()));
         } catch (Exception e) {
             return ProviderResult.fail("Slack error: " + e.getMessage());
         }
