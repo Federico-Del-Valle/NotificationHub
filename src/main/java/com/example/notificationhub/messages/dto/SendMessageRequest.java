@@ -16,8 +16,8 @@ public record SendMessageRequest(
         @NotBlank String content,
 
         @Schema(
-                description = "Lista de destinos donde se enviaran los mensajes (slack o telegram)",
-                example = "[{\"provider\":\"SLACK\",\"destination\":\"general\"}]"
+                description = "Lista de destinos donde se enviaran los mensajes ( slack o telegram)",
+                example = "[{\"provider\": \"SLACK\", \"destination\": \"slack\"}]"
         )
         @Size(min = 1) List<@Valid Target> targets
 ) {
