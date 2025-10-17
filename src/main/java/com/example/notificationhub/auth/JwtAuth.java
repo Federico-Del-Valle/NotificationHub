@@ -29,8 +29,8 @@ public class JwtAuth extends OncePerRequestFilter {
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             try {
-                String username = jwtService.subject(token);           // extrae el "sub" del JWT
-                var userOpt = userRepository.findByUsername(username); // busca el usuario
+                String username = jwtService.subject(token);
+                var userOpt = userRepository.findByUsername(username);
                 if (userOpt.isPresent()) {
                     var user = userOpt.get();
                     var auth = new UsernamePasswordAuthenticationToken(
@@ -41,7 +41,7 @@ public class JwtAuth extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
             } catch (Exception ignored) {
-                // Si el token falla, dejamos la request sin auth; caerá en 401 si la ruta exige autenticación
+                // En caso de error, no se autentica al usuario
             }
         }
         chain.doFilter(req, res);

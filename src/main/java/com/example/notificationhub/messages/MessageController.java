@@ -64,6 +64,7 @@ public class MessageController {
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = MessageResponse.class)))),
             @ApiResponse(responseCode = "401", description = "No autenticado")
     })
+    @GetMapping("/mine")
     public List<MessageResponse> mine(
             @RequestParam(required = false) MessageStatus status,
             @RequestParam(required = false) Provider provider,

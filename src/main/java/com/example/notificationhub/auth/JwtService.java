@@ -22,8 +22,8 @@ public class JwtService {
     public String generate(String subject, Map<String, Object> claims) {
         long now = System.currentTimeMillis();
         return Jwts.builder()
-                .setSubject(subject)               // "sub" = username
-                .addClaims(claims)                 // ej: role
+                .setSubject(subject)
+                .addClaims(claims)
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + expirationMs))
                 .signWith(key)

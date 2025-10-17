@@ -24,7 +24,6 @@ public class SlackSender implements CommonSender {
 
             ResponseEntity<String> resp = http.exchange(webhookUrl, HttpMethod.POST, entity, String.class);
 
-            // Si Slack redirige (302/307/etc), seguimos manualmente
             if (resp.getStatusCode().is3xxRedirection()) {
                 URI loc = resp.getHeaders().getLocation();
                 if (loc != null) {
