@@ -1,5 +1,4 @@
 package com.example.notificationhub.users;
-
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.Instant;

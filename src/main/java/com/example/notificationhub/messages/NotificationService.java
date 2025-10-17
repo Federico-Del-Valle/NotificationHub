@@ -62,7 +62,7 @@ public class NotificationService {
             sentToday++;
         }
 
-        return lastSaved; // el controller mapea a DTO
+        return lastSaved;
     }
 
 

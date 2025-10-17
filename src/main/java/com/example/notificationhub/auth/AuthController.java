@@ -1,7 +1,7 @@
 package com.example.notificationhub.auth;
-
 import com.example.notificationhub.auth.dto.*;
 import com.example.notificationhub.users.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "Auth", description = "Registro y login con JWT")
 @RequiredArgsConstructor
 public class AuthController {
     private final UserRepository users;

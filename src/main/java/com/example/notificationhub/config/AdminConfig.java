@@ -1,5 +1,4 @@
 package com.example.notificationhub.config;
-
 import com.example.notificationhub.users.Rol;
 import com.example.notificationhub.users.User;
 import com.example.notificationhub.users.UserRepository;

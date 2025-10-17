@@ -1,9 +1,7 @@
 package com.example.notificationhub.messages;
-
 import com.example.notificationhub.users.User;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.Instant;
 
 
@@ -29,7 +27,7 @@ public class Message {
     @Column(nullable = false, length = 20)
     private MessageStatus status = MessageStatus.PENDING;
 
-    // Podés dejarlo como TEXT; si después usamos JSON, lo mapeamos igual como String
+
     @Column(name = "provider_response", columnDefinition = "text")
     private String providerResponse;
 

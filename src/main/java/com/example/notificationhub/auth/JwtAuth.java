@@ -1,5 +1,4 @@
 package com.example.notificationhub.auth;
-
 import com.example.notificationhub.users.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

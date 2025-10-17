@@ -1,11 +1,9 @@
 package com.example.notificationhub.messages.senders;
-
 import com.example.notificationhub.messages.Provider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
 import java.net.URI;
 import java.util.Map;
 

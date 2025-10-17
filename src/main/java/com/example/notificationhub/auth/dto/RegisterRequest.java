@@ -1,5 +1,9 @@
 package com.example.notificationhub.auth.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
-public record RegisterRequest(@NotBlank String username, @NotBlank String password) {}
+public record RegisterRequest(
+        @Schema(description = "Nombre de usuario", example = "fede")
+        @NotBlank String username,
+        @NotBlank String password) {}

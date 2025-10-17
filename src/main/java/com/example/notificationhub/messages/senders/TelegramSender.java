@@ -1,5 +1,4 @@
 package com.example.notificationhub.messages.senders;
-
 import com.example.notificationhub.messages.Provider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
@@ -20,15 +19,13 @@ public class TelegramSender implements CommonSender {
     @Override
     public ProviderResult send(String destination, String content) {
         try {
-            // A) parseo SEGURO: BOT_TOKEN y CHAT_ID separados por el ÚLTIMO ':'
             int idx = destination.lastIndexOf(':');
             if (idx <= 0 || idx == destination.length() - 1) {
                 return ProviderResult.fail("Telegram error: destination inválido. Esperado BOT_TOKEN:CHAT_ID");
             }
-            String botToken = destination.substring(0, idx);   // token completo (con ':')
-            String chatId   = destination.substring(idx + 1);  // chat id
+            String botToken = destination.substring(0, idx);
+            String chatId   = destination.substring(idx + 1);
 
-            // B) POST application/x-www-form-urlencoded (evita problemas de encoding)
             String url = "https://api.telegram.org/bot" + botToken + "/sendMessage";
 
             HttpHeaders headers = new HttpHeaders();
