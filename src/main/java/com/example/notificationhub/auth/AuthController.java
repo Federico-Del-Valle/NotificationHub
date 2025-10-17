@@ -18,6 +18,7 @@ public class AuthController {
     private final PasswordEncoder encoder;
     private final JwtService jwt;
 
+    //Endpoint de registro
     @PostMapping("/register")
     public AuthResponse register(@RequestBody @Valid RegisterRequest req) {
         if (users.existsByUsername(req.username())) throw new IllegalArgumentException("username already exists");
@@ -31,6 +32,7 @@ public class AuthController {
         return new AuthResponse(token);
     }
 
+    //Endpoint de login
     @PostMapping("/login")
     public AuthResponse login(@RequestBody @Valid LoginRequest req) {
         var user = users.findByUsername(req.username())

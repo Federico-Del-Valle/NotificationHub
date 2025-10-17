@@ -46,6 +46,8 @@ public class MessageController {
             @ApiResponse(responseCode = "401", description = "No autenticado"),
             @ApiResponse(responseCode = "429", description = "Limite diario superado")
     })
+
+    //Endpoint para enviar un mensaje a multiples plataformas
     @PostMapping("/send")
     public MessageResponse send(@RequestBody @Valid SendMessageRequest req) {
         var user = currentUser.getOrThrow();
@@ -64,6 +66,8 @@ public class MessageController {
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = MessageResponse.class)))),
             @ApiResponse(responseCode = "401", description = "No autenticado")
     })
+
+    //Endpoint que muestra los mensajes del usuario autenticado, con filtros opcionales
     @GetMapping("/mine")
     public List<MessageResponse> mine(
             @RequestParam(required = false) MessageStatus status,
@@ -91,6 +95,8 @@ public class MessageController {
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = MessageResponse.class)))),
             @ApiResponse(responseCode = "401", description = "No autenticado")
     })
+
+    //Endpoint que muestra los mensajes enviados a un destinatario en particular
     @GetMapping("/for/{recipient}")
     public List<MessageResponse> byRecipient(@PathVariable String recipient) {
         return messages.findByRecipientOrderByCreatedAtDesc(recipient)

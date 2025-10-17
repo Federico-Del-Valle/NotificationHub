@@ -41,6 +41,7 @@ public class AdminMessageController {
             @ApiResponse(responseCode = "403", description = "Sin permisos (requiere rol ADMIN)")
     })
 
+    //Endpoint para que un admin vea todos los mensajes con filtros opcionales
     @GetMapping("/all")
     public List<MessageResponse> all(
             @RequestParam(required = false) MessageStatus status,
@@ -81,6 +82,7 @@ public class AdminMessageController {
             @ApiResponse(responseCode = "403", description = "Sin permisos (requiere rol ADMIN)")
     })
 
+    //Endpoint para que un admin vea metricas por usuario y cantidad de mensajes enviados y restantes
     @GetMapping("/metrics")
     public List<UserMetricsResponse> metrics() {
         ZoneId zone = ZoneId.systemDefault();
