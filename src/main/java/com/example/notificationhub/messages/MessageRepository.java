@@ -10,4 +10,5 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findByRecipientOrderByCreatedAtDesc(String recipient);
 
     long countBySenderAndCreatedAtBetween(User sender, Instant from, Instant to);
+    long countBySender(User sender);
 }

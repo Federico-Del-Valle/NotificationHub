@@ -8,6 +8,7 @@ public record MessageResponse(
         String recipient,
         String content,
         String status,
+        String provider,
         String providerResponse,
         Instant createdAt
 ) {}

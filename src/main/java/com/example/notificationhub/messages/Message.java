@@ -37,6 +37,10 @@ public class Message {
     @Column(nullable = false, name = "created_at")
     private Instant createdAt = Instant.now();
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Provider provider;
+
     @PrePersist
     void prePersist() {
         if (createdAt == null) createdAt = Instant.now();

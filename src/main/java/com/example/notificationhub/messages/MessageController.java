@@ -6,8 +6,11 @@ import com.example.notificationhub.messages.dto.SendMessageRequest;
 import com.example.notificationhub.users.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @RestController
@@ -18,6 +21,8 @@ public class MessageController {
     private final MessageRepository messages;
     private final CurrentUser currentUser;
     private final NotificationService notificationService;
+    private final MessageFilterService filterService;
+
 
     // POST /api/messages/send  (requiere Bearer token)
     @PostMapping("/send")
@@ -27,11 +32,19 @@ public class MessageController {
         return toResponse(saved);
     }
 
-    // GET /api/messages/mine  (mis enviados)
     @GetMapping("/mine")
-    public List<MessageResponse> mine() {
+    public List<MessageResponse> mine(
+            @RequestParam(required = false) MessageStatus status,
+            @RequestParam(required = false) Provider provider,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+    ) {
         User me = currentUser.getOrThrow();
-        return messages.findBySenderOrderByCreatedAtDesc(me)
+        ZoneId zone = ZoneId.systemDefault();
+        Instant fromI = (from == null) ? null : from.atStartOfDay(zone).toInstant();
+        Instant toI   = (to   == null) ? null : to.plusDays(1).atStartOfDay(zone).toInstant();
+
+        return filterService.findFiltered(me, status, provider, fromI, toI)
                 .stream().map(this::toResponse).toList();
     }
 
@@ -50,6 +63,7 @@ public class MessageController {
                 m.getRecipient(),
                 m.getContent(),
                 m.getStatus().name(),
+                m.getProvider().name(),
                 m.getProviderResponse(),
                 m.getCreatedAt()
         );
